@@ -175,7 +175,7 @@ fi
 # stuck with it
 if type joe > /dev/null; then
     export EDITOR=/usr/bin/joe
-
+fi
 
 # some Functions
 function generate_ssl_cert {
