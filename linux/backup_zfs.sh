@@ -70,8 +70,8 @@ function do_space_check(){
                 ZFS_SIZE=$((ZFS_AVAIL+ZFS_USED))                # total size of the pool
                 
                 echo -e "$txt_info Total: $bldgrn$ZFS_SIZE ($($NUMFMT --to=iec-i $ZFS_SIZE)) $txtrst"
-                echo -e "$txt_info Used: $bldgrn$ZFS_USED ($($NUMFMT --to=iec-i $ZFS_USED)) $txtrst"
-                echo -e "$txt_info Free: $bldgrn$ZFS_AVAIL ($($NUMFMT --to=iec-i $ZFS_AVAIL)) $txtrst"
+                echo -e "$txt_info Used: $bldgrn$ZFS_USED ($($NUMFMT --to=iec-i "$ZFS_USED")) $txtrst"
+                echo -e "$txt_info Free: $bldgrn$ZFS_AVAIL ($($NUMFMT --to=iec-i "$ZFS_AVAIL")) $txtrst"
                 
                 ZFS_COMBINED+=ZFS_USED                          # sum of disk space of
         done                                                    # all local pools
@@ -81,11 +81,11 @@ function do_space_check(){
                                                                 # the space consumed by snapshots
         ZFS_AVAIL_DEST=$($ZFS list -o avail,used -t filesystem -pH "$TARGET" | $AWK '{ print $1 }')
         echo -e "$txt_info Used Diskspace on local Pool(s): $bldgrn$ZFS_COMBINED ($($NUMFMT --to=iec-i $ZFS_COMBINED)) $txtrst"
-        echo -e "$txt_info Free Diskspace on Target Device: $bldgrn$ZFS_AVAIL_DEST ($($NUMFMT --to=iec-i $ZFS_AVAIL_DEST)) $txtrst"
+        echo -e "$txt_info Free Diskspace on Target Device: $bldgrn$ZFS_AVAIL_DEST ($($NUMFMT --to=iec-i "$ZFS_AVAIL_DEST")) $txtrst"
 
                                                                 # abort when the target hasn't
                                                                 # enough space
-        if [ $ZFS_COMBINED -ge $ZFS_AVAIL_DEST ]; then
+        if [ $ZFS_COMBINED -ge "$ZFS_AVAIL_DEST" ]; then
                 echo -e "\n$txt_wrong$bldred Not enough space on Target Device $txtrst\n$txt_wrong$bldred Aborting..."
                 $ZPOOL export $TARGET                           # export the Pool        
                 exit 3
@@ -113,7 +113,7 @@ function do_checks() {
 
         if [[ "${PRODUCTION[*]}" =~ $TARGET ]]; then
                 echo -e "$txt_info Already mounted: $bldblu$TARGET"
-                PRODUCTION=(${PRODUCTION[@]/$TARGET})
+                PRODUCTION=("${PRODUCTION[@]/$TARGET}")
                 do_space_check
         else
                 echo -e "\n$txt_ok Search for Backup Pool..."
