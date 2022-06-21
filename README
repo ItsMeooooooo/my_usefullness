@@ -1,29 +1,16 @@
-Name          : promtcolors.sh (the typo is intended
-                                at least now)
-Provides      : Creates a bash Startup Environment
-Description   : Create a startup Environment, sets some
-                Aliases and defines some usefull functions
-Location:     : /etc/profile.d/
+Name          : my_usefullnes
+Provides      : some random scripts
+Description   : these are scripts for the lazy me
+                helper scripts that provide benefits
+                to my environment
 
-Modified      : 08|12|2020
+Created       : 08|12|2020
 Author        : ItsMe
 Reply to      : itsme@bubbleclub.de           
 
-Comment:      : I did not test for POSIX Compliance
+Comment:      : Often (read almost never) I did not test
+                for POSIX Compliance
                 Most of the time I work in RHEL/ CentOS
-                Environments. Simply place the File
-                in your /etc/profile.d and it should be
-                parsed properly. You'll experience 
-                a different Behavior on Debian based
-                Distros. Here you have to edit
-                /etc/profile and add:
-
-                if [ -d /etc/profile.d ]; then
-                      for i in /etc/profile.d/*.sh; do
-                              if [ -r $i ]; then
-                                      .  $i
-                              fi
-                      done
-                      unset i
-                fi
-
+                Environments. So you'll maybe experience 
+                a different Behavior on Debian based or
+                other flavored Distros.
