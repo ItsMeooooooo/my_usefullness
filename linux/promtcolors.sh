@@ -149,7 +149,7 @@ alias ...='cd ../..'
 alias jeo='joe'
 alias sun="su -c 'su -s $(command -v bash) - nginx'"
 alias shred='shred -n 100 -z -v -u'
-alias docker=podman
+alias docker='podman'
 
 # ignore Dupes and Lines with whitespaces
 # options are: ignorespace, ignoredups and ignoreboth
