@@ -85,7 +85,7 @@ function txt_bld(){
 }
 
 needed_files=""
-zfs_install_file=""
+zfs_install_file="https://zfsonlinux.org/fedora/zfs-release$(rpm -E %dist).noarch.rpm"
 
 standard_user=akrusch
 
@@ -94,6 +94,7 @@ ssh_port=2266
 release_file=/etc/os-release
 
 authorized_keys="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDpSHQ/WxbZa9qYp651csBLXeCrTJdxibgStMdXo3wbyLjaFySG6AagJyVN84K8h/jIBYsUaHDH8BxzjpV6T32X6usy9xqhY4i7Q9FUQPc7VZzRuaZJXue2UX7DQAQFb6Pkuh89XEiJLGmzljex/d98xPC+d/czPdXNWurFoQts8ghUuLD2YglpP2qM4UdFUtkh1PCEy1jyLSajP2we4yEE5udPMNNKSKcTGYnZqzLpQ8ZcwyFzAIbVYd/e6A34j5zn6BCPBPSTUoU+wXzwfb8Yg7u7HwOFhX6u6VH7dlswEmcaJ4NYYX5TL56/xLIqRYiJUYTj3Rja56aICcNPxwnB krusch@rechner02-fe13.bubbleclub.de"
+zfs_inst
 
 if [ $? -eq "1" ] ; then                           
     echo -e "$txt_wrong dnf not found\naborting..."
@@ -218,7 +219,7 @@ function check_installed_programs() {
 	done
 	for i in "${!selection_progs[@]}"; do
 		#echo -e "${selection_progs[$i]}"
-		$($DNF $is_inst_command ${selection_progs[$i]} &>/dev/null)
+		$DNF "$is_inst_command" "${selection_progs[$i]}" &>/dev/null
 		if [ $? -eq 1 ]; then
 			echo -e $txt_wrong missing: ${selection_progs[$i]}
 			progs_to_install+=(${selection_progs[$i]})

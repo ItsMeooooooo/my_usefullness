@@ -1,5 +1,5 @@
 linux/install_base.sh
-linux/install_base.sh
+
 **/*~
 **/*.bak
 **/*.sw[abcdefghijklmnop]
