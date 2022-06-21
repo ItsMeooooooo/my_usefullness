@@ -163,7 +163,6 @@ if [[ $EUID -eq 0 ]];
 	elif [[ $EUID -eq $(grep nginx /etc/passwd | grep -Eo '[0-9]{1,}' | head -n1) ]];
 		then 
 		PS1="\[$bldgrn\][\u\[$bldwht\]@\[$bldgrn\]\h\[$bldylw\] \W\[$bldgrn\]]\[$bldylw\]\$\[$txtrst\] ";
-		cd /var/www/html/
 	# colors for standard user(s)
 	else
 		PS1="\[$bldblu\][\u\[$bldwht\]@\[$bldblu\]\h\[$bldylw\] \W\[$bldblu\]]\[$bldylw\]\$\[$txtrst\] ";
@@ -189,7 +188,6 @@ function generate_ssl_cert {
         openssl x509 -req -days 365 -in ${cert_name}.csr -signkey ${cert_name}.pem -out ${cert_name}.crt
   )
 }
-
 
 cd() {
   if [ -n "$1" ]; then
