@@ -36,21 +36,21 @@
 #
 
 # set some bash env
-set -o errexit								# equivalent to: "set -e" (make the script execution terminate)
-set -o nounset								# equivalent to: "set -u" (terminate the script when a variable isn't set)
-set -o pipefail								# make the whole pipe fail when a subcommand fails
+set -o errexit								                # equivalent to: "set -e" (make the script execution terminate)
+set -o nounset								                # equivalent to: "set -u" (terminate the script when a variable isn't set)
+set -o pipefail								                # make the whole pipe fail when a subcommand fails
 
 # set some variables
 SCRIPT_NAME="${0##*/}"                      				# this way we do not need to call the 'basename' function
-									# shellcheck disable=SC2034
+									                        # shellcheck disable=SC2034
 SCRIPT_SHORT_NAME="${SCRIPT_NAME%.*}"       				# the script name without extension
 
 
-SOURCE_DIR="$HOME/test"				        		# set here the Source Directory you want to backup
-                                    					# when the "-d" option on commandline isn't used
+SOURCE_DIR="$HOME/test"				        		        # set here the Source Directory you want to backup
+                                    					    # when the "-d" option on commandline isn't used
 
-BACKUP_DIR="/mnt/Backup"            					# set here the Destination Directory to backup to
-                                    					# when the "-b" option on commandline isn't used
+BACKUP_DIR="/mnt/Backup"            					    # set here the Destination Directory to backup to
+                                    					    # when the "-b" option on commandline isn't used
 
 LOG_DIR=$BACKUP_DIR
 
@@ -80,10 +80,10 @@ RSYNC_OPTS="-aHAXh --verbose --checksum --delete --numeric-ids"         # "-a"  
                                                                         # "--numeric-ids" don't map uid/gid values by user/group name
 
 
-printf '' > "$LOG_DIR"/info.log						# Reset the log files on every run
+printf '' > "$LOG_DIR"/info.log						                    # Reset the log files on every run
 printf '' > "$LOG_DIR"/debug.log
 
-usage_help(){								# define a short help displayed when for "-h" option
+usage_help(){								                            # define a short help displayed when for "-h" option
     echo "$SCRIPT_NAME - A script to perform incremental backups using rsync."
     echo
     echo "Usage  : $SCRIPT_NAME [ OPTIONS ]"
@@ -120,19 +120,19 @@ while getopts "d:b:h" opt; do                                       	#       get
 done
 
 		
-exec 1>>"$LOG_DIR"/debug.log 2>>"$LOG_DIR"/debug.log			# Redirect both stdout and stderr
-									# write to the debug logfile
+exec 1>>"$LOG_DIR"/debug.log 2>>"$LOG_DIR"/debug.log			        # Redirect both stdout and stderr
+									                                    # write to the debug logfile
 
-									# Write to both info and debug
+									                                    # Write to both info and debug
 echo "Starting Backup Files at $NOW from $SOURCE_DIR" | tee -a "$LOG_DIR"/info.log
 
-									# run the command
+									                                    # run the command
 $RSYNC "$RSYNC_OPTS" "${SOURCE_DIR}/" --link-dest="${LATEST_LINK}" --exclude=".cache" "${BACKUP_PATH}"
 
-rm -rf "${LATEST_LINK}"							# remove the symlink to the Directory 'latest'
+rm -rf "${LATEST_LINK}"							                        # remove the symlink to the Directory 'latest'
 
-ln -s "${BACKUP_PATH}" "${LATEST_LINK}"					# create the symlink from the last backup to 'latest'
+ln -s "${BACKUP_PATH}" "${LATEST_LINK}"					                # create the symlink from the last backup to 'latest'
 
-echo " ✅ " | tee -a "$LOG_DIR"/info.log				# Write to both info and debug
+echo " ✅ " | tee -a "$LOG_DIR"/info.log				                   # Write to both info and debug
 
 # EOF

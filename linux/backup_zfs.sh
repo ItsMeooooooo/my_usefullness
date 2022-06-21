@@ -3,8 +3,11 @@
 # Provides      : Transfer (Backup) ZFS Pool(s)
 # Description   : A short script to sync ZFS Snapshots between
 #                 volumes. It mounts a predefined Backup Pool 
-#                 and syncs the production Pool(s) to it.
+#                 and syncs the production Pool(s) to it using
+#                 sanoid/ syncoid.
 #                 Its Main purpose is to transfer ZFS Pools to an external HDD.
+#
+# URL(s)        : https://github.com/jimsalterjrs/sanoid
 #            
 # TODO          : a) Implement simple logging capabilities
 #                 b) Implement a proper Errorhandling
@@ -40,11 +43,11 @@ txt_wrong=$bldred'[-]'$txtrst                                   # [-]
 txt_ok=$bldgrn'[+]'$txtrst                                      # [+]
 txt_info=$bldgrn'[Info]'$txtrst                                 # [Info]
 
-AWK=$(command -v awk)                                           # check for aviable utils
+AWK=$(command -v awk)                                           # check for avaible utils
 HEAD=$(command -v head)                                         # all of them should be
 GREP=$(command -v grep)                                         # installed by default
-ZPOOL=$(command -v zpool)                                       # on most Distros
-ZFS=$(command -v zfs)                                           # even in basic installs
+ZPOOL=$(command -v zpool)                                       # on most Distros (except sanoid/ syncoid)
+ZFS=$(command -v zfs)                                           # (even in basic installs)
 SYNCOID=$(command -v syncoid)                                   # a few (grep, sed, tail)
 NUMFMT=$(command -v numfmt)                                     # aren't used by now
 SED=$(command -v sed)
@@ -113,7 +116,12 @@ function do_checks() {
 
         if [[ "${PRODUCTION[*]}" =~ $TARGET ]]; then
                 echo -e "$txt_info Already mounted: $bldblu$TARGET"
-                PRODUCTION=("${PRODUCTION[@]/$TARGET}")
+                #PRODUCTION=("${PRODUCTION[@]/$TARGET}")
+                for i in "${!PRODUCTION[@]}"; do
+                        if [[ ${PRODUCTION[i]} = "$TARGET" ]]; then
+                                unset '$PRODUCTION[$i]'
+                        fi
+                done
                 do_space_check
         else
                 echo -e "\n$txt_ok Search for Backup Pool..."

@@ -200,7 +200,8 @@ cd() {
 }
 
 function myip(){
-    curl -s http://checkip.dyndns.org:8245 | grep -Eo '[0-9.]{7,15}'
+    curl ipv4.ownip.org
+    curl ipv6.ownip.org
 }
 
 function check_(){
