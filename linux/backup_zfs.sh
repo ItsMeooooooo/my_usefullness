@@ -45,15 +45,13 @@ txt_info=$bldgrn'[Info]'$txtrst                                 # [Info]
 
 AWK=$(command -v awk)                                           # check for avaible utils
 HEAD=$(command -v head)                                         # all of them should be
-GREP=$(command -v grep)                                         # installed by default
+                                                                # installed by default
 ZPOOL=$(command -v zpool)                                       # on most Distros (except sanoid/ syncoid)
 ZFS=$(command -v zfs)                                           # (even in basic installs)
 SYNCOID=$(command -v syncoid)                                   # a few (grep, sed, tail)
 NUMFMT=$(command -v numfmt)                                     # aren't used by now
-SED=$(command -v sed)
-TAIL=$(command -v tail)
 
-TARGET="extBackup"                                              # define the Name of the
+TARGET="extBackup"                                              # define the (default) Name of the
                                                                 # target Pool
 declare -a PRODUCTION=()                                        # Array for local pools
 declare -i ZFS_AVAIL                                            # Variables for Space calculation
