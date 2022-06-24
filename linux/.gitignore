@@ -1,0 +1,29 @@
+# custom
+check_radius.sh
+
+# predefined
+**/*~
+**/*.bak
+**/*.sw[abcdefghijklmnop]
+
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+*.pyc
+*.pyo
+
+*.bak
+*.log
+*.sql
+*.sqlite
+
+Thumbs.db
+desktop.ini
+
+*id_rsa*
