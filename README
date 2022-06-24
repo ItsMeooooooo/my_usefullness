@@ -1,0 +1,16 @@
+Name          : my_usefullnes
+Provides      : some random scripts
+Description   : these are scripts for the lazy me
+                helper scripts that provide benefits
+                to my environment
+
+Created       : 08|12|2020
+Author        : ItsMe
+Reply to      : itsme@bubbleclub.de           
+
+Comment:      : Often (read almost never) I did not test
+                for POSIX Compliance
+                Most of the time I work in RHEL/ CentOS
+                Environments. So you'll maybe experience 
+                a different Behavior on Debian based or
+                other flavored Distros.
