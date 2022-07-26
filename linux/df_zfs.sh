@@ -93,19 +93,32 @@ function do_checks() {
 # awk is used for calculations because bash/ zsh only 
 # handle integers
 function convert_numbers() {
-        if [ "${#1}" = 8 ] || [ "${#1}" = 9 ] || [ "${#1}" = 10 ]; then
-               $AWK 'BEGIN { print ('$1' / (1024 ** 2))"Mi" }'
+        # Kibibyte [KiB] (2^10)
+        if (( "${#1}" >= 4 )) && (( "${#1}" <7 )); then
+               awk 'BEGIN { print ('$1' / (1024 ** 1))"KiB" }'
         fi
-        if [ "${#1}" = 11 ] || [ "${#1}" = 12 ] || [ "${#1}" = 13 ]; then
-                $AWK 'BEGIN { print ('$1' / (1024 ** 3))"Gi" }'
+        # Mebibyte [MiB] (2^20)
+        if (( "${#1}" >= 7 )) && (( "${#1}" <10 )); then
+               awk 'BEGIN { print ('$1' / (1024 ** 2))"MiB" }'
         fi
-        if [ "${#1}" = 14 ] || [ "${#1}" = 15 ] || [ "${#1}" = 16 ]; then
-                $AWK 'BEGIN { print ('$1' / (1024 ** 4))"Ti" }'
+        # Gibibyte [KiB] (2^30)
+        if (( "${#1}" >= 10 )) && (( "${#1}" <13 )); then
+                awk 'BEGIN { print ('$1' / (1024 ** 3))"GiB" }'
         fi
-        if [ "${#1}" = 17 ] || [ "${#1}" = 18 ] || [ "${#1}" = 19 ]; then
-                $AWK 'BEGIN { print ('$1' / (1024 ** 5))"Pi" }'
+        # Tebibyte [TiB] (2^40)
+        if (( "${#1}" >= 13 )) && (( "${#1}" <16 )); then
+                awk 'BEGIN { print ('$1' / (1024 ** 4))"TiB" }'
+        fi
+        # Pebibyte [PiB] (2^50)
+        if (( "${#1}" >= 16 )) && (( "${#1}" <19 )); then
+                awk 'BEGIN { print ('$1' / (1024 ** 5))"PiB" }'
+        fi
+        # Exbibyte [EiB] (2^60)
+        if (( "${#1}" >= 19 )) && (( "${#1}" <22 )); then
+                awk 'BEGIN { print ('$1' / (1024 ** 6))"EiB" }'
         fi
 }
+
 
 do_checks
 
