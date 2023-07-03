@@ -1,34 +1,34 @@
 #!/bin/bash
 # shellcheck disable=SC1091,SC2164,SC2034,SC1072,SC1073,SC1009
 #
-# Name		: promtcolors.sh (the typo is intended
-#				  at least now)
+# Name          : promtcolors.sh (the typo is intended
+#	                at least now)
 # Provides      : Creates a bash Startup Environment
 # Description   : Create a startup Environment, sets some
-#		  Aliases and defines some usefull functions
-# Location:	: /etc/profile.d/
+#	                Aliases and defines some usefull functions
+# Location      : /etc/profile.d/
 #
 # Modified      : 08|12|2020
 # Author        : ItsMe
 # Reply to      : itsme@bubbleclub.de           
 #
-# Comment:	: I did not test for POSIX Compliance
-#		  Most of the time I work in RHEL/ CentOS
-#		  Environments. Simply place the File
-#		  in your /etc/profile.d and it should be
-#		  parsed properly. You'll experience 
-#		  a different Behavior on Debian based
-#		  Distros. Here you have to edit
-#		  /etc/profile and add:
+# Comment       : I did not test for POSIX Compliance
+#	                Most of the time I work in RHEL/ CentOS
+#		              Environments. Simply place the File
+#		              in your /etc/profile.d and it should be
+#		              parsed properly. You'll experience 
+#		              a different Behavior on Debian based
+#		              Distros. Here you have to edit
+#		              /etc/profile and add:
 #
-# 		  if [ -d /etc/profile.d ]; then
-#   			for i in /etc/profile.d/*.sh; do
-#     				if [ -r $i ]; then
-#       				.  $i
-#     				fi
-#   			done
-#   			unset i
-# 		  fi
+# 		              if [ -d /etc/profile.d ]; then
+#   			            for i in /etc/profile.d/*.sh; do
+#     				            if [ -r $i ]; then
+#       				            .  $i
+#     				            fi
+#   			            done
+#   			            unset i
+# 		              fi
 #
 #########################################################
 # 
@@ -145,12 +145,15 @@ bakcyn='\e[46m'   # Cyan
 bakwht='\e[47m'   # White
 txtrst='\e[0m'    # Text Reset
 
+
 alias ..='cd ..'
 alias ...='cd ../..'
 alias jeo='joe'
 alias sun="su -c 'su -s $(command -v bash) - nginx'"
 alias shred='shred -n 100 -z -v -u'
 alias docker='podman'
+alias l_cp="rsync -ah --inplace --no-whole-file --info=progress2"
+alias ip="ip -c"
 
 # ignore Dupes and Lines with whitespaces
 # options are: ignorespace, ignoredups and ignoreboth
@@ -183,10 +186,10 @@ function generate_ssl_cert {
   cert_name=$1
 
   (
-        openssl genrsa -des3 -out ${cert_name}.key 1024
-        openssl rsa -in ${cert_name}.key -out ${cert_name}.pem
-        openssl req -new -key ${cert_name}.pem -out ${cert_name}.csr
-        openssl x509 -req -days 365 -in ${cert_name}.csr -signkey ${cert_name}.pem -out ${cert_name}.crt
+        openssl genrsa -des3 -out "${cert_name}".key 1024
+        openssl rsa -in "${cert_name}".key -out "${cert_name}".pem
+        openssl req -new -key "${cert_name}".pem -out "${cert_name}".csr
+        openssl x509 -req -days 365 -in "${cert_name}".csr -signkey "${cert_name}".pem -out "${cert_name}".crt
   )
 }
 
@@ -203,6 +206,15 @@ function myip(){
     curl ipv6.ownip.org
 }
 
+function sysinfo(){
+if [[ $EUID -eq 0 ]];
+    then
+        for i in $(dmidecode -s 2>&1 | awk 'NR > 3'); do printf "%-30s %-30s\n" "$i" ": $(dmidecode -s "$i")"; done
+    else
+        echo "sysinfo: Befehl nicht gefunden"
+fi
+}
+
 function check_(){
 	cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30
 }
@@ -212,35 +224,36 @@ function compress_() {
    FILE=$1
    shift
    case $FILE in
-      *.tar.bz2) tar cjf $FILE $*  ;;
-      *.tar.gz)  tar czf $FILE $*  ;;
-      *.tgz)     tar czf $FILE $*  ;;
-      *.zip)     zip $FILE $*      ;;
-      *.rar)     rar $FILE $*      ;;
+      *.tar.bz2) tar cjf "$FILE" "$*"  ;;
+      *.tar.gz)  tar czf "$FILE" "$*"  ;;
+      *.tgz)     tar czf "$FILE" "$*"  ;;
+      *.zip)     zip "$FILE" "$*"      ;;
+      *.rar)     rar "$FILE" "$*"      ;;
       *)         echo "Filetype not recognized" ;;
    esac
 }
 
 extract () {
-  if [ -f $1 ] ; then
+  if [ -f "$1" ] ; then
       case $1 in
-          *.tar.bz2)   tar xvjf $1    ;;
-          *.tar.gz)    tar xvzf $1    ;;
-          *.bz2)       bunzip2 $1     ;;
-          *.rar)       rar x $1       ;;
-          *.gz)        gunzip $1      ;;
-          *.tar)       tar xvf $1     ;;
-          *.tbz2)      tar xvjf $1    ;;
-          *.tgz)       tar xvzf $1    ;;
-          *.zip)       unzip $1       ;;
-          *.Z)         uncompress $1  ;;
-          *.7z)        7z x $1        ;;
+          *.tar.bz2)   tar xvjf "$1"    ;;
+          *.tar.gz)    tar xvzf "$1"    ;;
+          *.bz2)       bunzip2 "$1"     ;;
+          *.rar)       rar x "$1"       ;;
+          *.gz)        gunzip "$1"      ;;
+          *.tar)       tar xvf "$1"     ;;
+          *.tbz2)      tar xvjf "$1"    ;;
+          *.tgz)       tar xvzf "$1"    ;;
+          *.zip)       unzip "$1"       ;;
+          *.Z)         uncompress "$1"  ;;
+          *.7z)        7z x "$1"        ;;
           *)           echo "don't know how to extract '$1'..." ;;
       esac
   else
       echo "'$1' is not a valid file!"
   fi
 }
+
 function serve (){
 	echo "Serving the Directory on Port 8000"
 	if ! type python3 > /dev/null; then 

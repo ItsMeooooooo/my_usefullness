@@ -1,5 +1,6 @@
 linux/install_base.sh
 linux/check_radius.sh
+linux/install/
 
 **/*~
 **/*.bak
